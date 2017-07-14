@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  font-family: "Open Sans", sans-serif;
+}
+
+a {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 100vh;
+
+  font-size: 32px;
+  font-weight: 800;
+
+  perspective: 600px;
+  transform: skew(-10deg);
+  transition: all .2s ease-in-out;
+
+  position: relative;
+}
+
+.item {
+  width: 100%;
+  height: 100vh;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: currentColor;
+  transition: opacity .2s ease-in-out 0.2s, transform .2s ease-in-out, width .2s ease-in-out .1s;
+}
+
+.item .item-link {
+  text-decoration: none;
+  transform: skew(10deg);
+  transition: all .2s ease-in .2s;
+  color: white;
+  cursor: pointer;
+}
+
+.item div {
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1em;
+  opacity: 0;
+  transition: all .2s ease-in 0s;
+}
+
+.item:last-child::after {
+  content: '';
+  width: 100vw;
+  background: currentColor;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  transform: translateX(99%);
+}
+
+.item:first-child::before {
+  content: '';
+  width: 100vw;
+  background: currentColor;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-99%);
+}
+
+.container-selected {
+  transform: skew(0);
+}
+
+.container-selected .item-link {
+  transform: skew(0);
+  transition-delay: 0s;
+}
+
+.container-selected .item-selected .item-link {
+  opacity: 0;
+}
+
+.container-selected .item-selected div {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+.item-not-selected {
+  width: 2%;
+}
+
+.container-selected > .item-not-selected > .item-link,
+.container-selected > .item-not-selected div {
+  opacity: 0;
+  transform: skew(-10deg);
+}
+
+.A {
+  color: #1abc9c;
+}
+
+.B {
+  color: #f1c40f;
+}
+
+.C {
+  color: #e74c3c;
+}
+
+.D {
+  color: #3498db;
+}
+
+.E {
+  color: #e67e22;
+}
+
+.F {
+  color: #2ecc71;
+}
+
+.G {
+  color: #9b59b6;
+}

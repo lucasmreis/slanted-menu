@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 import MenuItem from './components/MenuItem'
 
 const ContentsContainer = styled.div`
@@ -10,17 +11,18 @@ const ContentsContainer = styled.div`
   padding: 1em;
   opacity: 1;
   transition: all .2s ease-in 0s;
-
-  & a {
-    text-decoration: underline;
-    cursor: pointer;
-  }
 `
 
-const contents = name => onClose => (
+const Back = styled(Link)`
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+`
+
+const contents = name => (
   <ContentsContainer>
     <h2>Contents of {name}</h2>
-    <a onClick={onClose}>Back</a>
+    <Back to="/">Back</Back>
   </ContentsContainer>
 )
 
@@ -47,38 +49,25 @@ const Container = styled.div`
   position: relative;
 `
 
-const isSelected = (i, { selected }) => selected === i
+const items = ['B', 'C', 'D', 'E', 'F', 'G']
 
-const allClosed = ({ selected }) => selected === null
+const menuItems = items.map(i => (
+  <MenuItem key={i} name={i} color={color[i]}>
+    {contents(i)}
+  </MenuItem>
+))
 
-class App extends Component {
-  state = {
-    items: ['A', 'B', 'C', 'D', 'E'],
-    selected: null
-  }
-
-  select = item => this.setState({ selected: item })
-
-  close = () => this.select(null)
-
-  render() {
-    return (
-      <Container selected={this.state.selected}>
-        {this.state.items.map(i => (
-          <MenuItem
-            key={i}
-            name={i}
-            color={color[i]}
-            allClosed={allClosed(this.state)}
-            selected={isSelected(i, this.state)}
-            onSelectItem={() => this.select(i)}
-            onClose={this.close}>
-            {contents(i)}
-          </MenuItem>
-        ))}
-      </Container>
-    )
-  }
-}
-
-export default App;
+export default () => (
+  <BrowserRouter>
+    <Switch>
+      <Route path="/:selected" render={() => (
+        <Container selected>
+          {menuItems}
+        </Container>)} />
+      <Route path="/" render={() => (
+        <Container selected={false}>
+          {menuItems}
+        </Container>)} />
+    </Switch>
+  </BrowserRouter>
+)

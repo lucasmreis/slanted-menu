@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link, withRouter } from 'react-router-dom'
 
 const Item = styled.div`
   cursor: ${props => props.selected ? 'unset' : 'pointer'};
@@ -36,7 +37,7 @@ const Item = styled.div`
   }
 `
 
-const ItemLink = styled.a`
+const ItemLink = styled(Link)`
   text-decoration: none;
   opacity: ${props => !props.allClosed || props.selected ? '0' : '1'};
   transform: skew(${props => props.allClosed ? '10' : '0'}deg);
@@ -47,7 +48,7 @@ const ItemLink = styled.a`
 
 const FadeInDiv = styled.div`
   opacity: ${props => props.opacity};
-  transition: all .2s ease-in-out .2s;
+  transition: all .2s ease-in-out .3s;
 `
 
 class FadeIn extends React.Component {
@@ -62,19 +63,23 @@ class FadeIn extends React.Component {
   }
 }
 
-export default ({ name, color, selected = false, allClosed = true, children, onSelectItem, onClose }) => (
-  <Item
+const MenuItem = ({ match, history, name, color, children }) => {
+  const selected = match.params.selected === name
+  const allClosed = match.path === '/'
+  return <Item
     selected={selected}
     allClosed={allClosed}
     color={color}
-    onClick={() => selected ? () => {} : onSelectItem()}>
+    onClick={() => selected ? () => {} : history.push(name)}>
     {selected
-      ? <FadeIn>{children(onClose)}</FadeIn>
+      ? <FadeIn>{children}</FadeIn>
       : (
-          <ItemLink onClick={onSelectItem} selected={selected} allClosed={allClosed}>
+          <ItemLink to={name} selected={selected} allClosed={allClosed}>
             {name}
           </ItemLink>
       )
     }
   </Item>
-)
+}
+
+export default withRouter(MenuItem)
